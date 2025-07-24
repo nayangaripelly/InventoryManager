@@ -5,25 +5,30 @@
 ### prerequisites
 
 1. install node
-2. have a mongodb cloud url or local setup and url ready
-3. install mongodb compass to view enteries in DB
+2. have a mongodb cloud url or local setup ready
+3. install mongodb compass to view enteries in DB if you are using cloud url
 4. git for cloning
 
 ## Installation steps
 
 1. Clone the repository
-    `git clone https://github.com/nayangaripelly/InventoryManager.git`
-    `cd InventoryManager`
+    <pre>bash<br>
+    git clone https://github.com/nayangaripelly/InventoryManager.git
+    cd InventoryManager
+    <br></pre>
+    
 
 2. Install Dependencies
-    `npm install`
+    <pre>bash<br>
+    npm install
+    <br></pre>
 
-3. Configure env variables
+3. Configure environment variables
     Create a .env file in the root directory and add the following
 
-    <pre>bash<br>
+    <pre>.env<br>
     PORT=5000
-    MONGODB_URI=mongodb://localhost:27017/your-db-name
+    MONGODB_URL=mongodb://localhost:27017/your-db-name
     JWT_SECRET=your_secret_key
     <br></pre>
 
@@ -31,3 +36,66 @@
     <pre>bash<br>
     npm run dev
     <br></pre>
+
+## Sample postman collections
+
+### POST /api/v1/signup
+
+Takes username(unique), password and make their entries in users collection.
+
+#### Request Body
+```json
+{
+  "username": "john",
+  "password": "123123"
+}
+```
+### POST /api/v1/login
+
+Takes username(unique), password and verifies them and send back jwt token.
+
+#### Request Body
+```json
+{
+  "username": "john",
+  "password": "123123"
+}
+```
+### POST /api/v1/products
+
+Takes name(unique), type, sku, image_url, description, quantity and price in body and jwt token in header
+
+### Request header
+ token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya 
+
+#### Request Body
+```json
+{
+  "name": "MacBook Air M4",
+  "type": "gadget",
+  "sku": "MBA-M4-2025-001",
+  "image_url": "https://example.com/images/macbook-air-m4.jpg",
+  "description": "Apple MacBook Air with M4 chip, 16GB RAM, 512GB SSD.",
+  "quantity": 50,
+  "price": 1399.99
+}
+```
+
+### PUT /api/v1/products/:id
+
+Takes quantity in body.
+
+### Request header
+ token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya
+
+#### Request Body
+```json
+{
+  "quantity": 50
+}
+```
+
+### GET /api/v1/products/
+
+### Request header
+ token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya
