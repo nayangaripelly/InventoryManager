@@ -9,6 +9,8 @@ const jwtsecret = process.env.JWT_SECRET as string;
 const mongourl = process.env.MONGO_URL as string;
 
 import { userModel,productModel } from "./db";
+import {userAuth} from "./middleware/userAuth";
+import { Request } from "express";
 const app = express();
 
 app.use(express.json());
@@ -72,19 +74,85 @@ app.post("/api/v1/login",async function(req,res)
     }
 });
 
-app.post("/api/v1/products",function(req,res)
-{
+interface customReq extends Request {
+    id? : string
+};
 
+app.use(userAuth);
+
+app.post("/api/v1/products",async function(req:customReq,res)
+{
+    const {name, type,sku, image_url,description,quantity,price} = req.body;
+    try{
+        const product = await productModel.create({
+            name,
+            type,
+            sku,
+            image_url,
+            description,
+            quantity,
+            price,
+            userId : req.id
+        })
+        res.status(200).json({
+            msg:`successfully added product ${product.name}, ${product._id}`
+        })
+    }catch(e)
+    {
+        res.status(500).json({
+            msg:"something went wrong try again"
+        })
+    }
 });
 
-app.put("/api/v1/products/:id/quantity",function(req,res)
+app.put("/api/v1/products/:id",async function(req:customReq,res)
 {
+    const id = req.params.id;
+    const quantity = req.body.quantity;
 
+    try{
+        await productModel.updateOne({
+            _id:id,
+            userId:req.id
+        },{
+            quantity
+        },{
+            runValidators:true
+        })
+        res.json({
+            msg:"successfully updated this product"
+        })
+    }catch(e)
+    {
+        res.json({
+            msg:"something went wrong!! try again"
+        })
+    }
 });
 
-app.get("/api/v1/products",function(req,res)
+app.get("/api/v1/products",async function(req:customReq,res)
 {
-
+    try{
+        const products = await productModel.find({
+            userId:req.id
+        })
+        if(products.length == 0)
+        {
+            res.json({
+                msg:"you don't have any products in your inventory",
+            })
+            return;
+        }
+        res.json({
+            products,
+            msg: "these are all your products"
+        })
+    }catch(e)
+    {
+        res.json({
+            msg:"something went wrong, try again"
+        })
+    }
 });
 
 async function main()
