@@ -39,7 +39,7 @@
 
 ## Sample postman collections
 
-### POST /api/v1/signup
+### POST /register
 
 Takes username(unique), password and make their entries in users collection.
 
@@ -50,7 +50,7 @@ Takes username(unique), password and make their entries in users collection.
   "password": "123123"
 }
 ```
-### POST /api/v1/login
+### POST /login
 
 Takes username(unique), password and verifies them and send back jwt token.
 
@@ -61,7 +61,7 @@ Takes username(unique), password and verifies them and send back jwt token.
   "password": "123123"
 }
 ```
-### POST /api/v1/products
+### POST /products
 
 Takes name(unique), type, sku, image_url, description, quantity and price in body and jwt token in header
 
@@ -81,7 +81,7 @@ Takes name(unique), type, sku, image_url, description, quantity and price in bod
 }
 ```
 
-### PUT /api/v1/products/:id
+### PUT /products/:id/quantity
 
 Takes quantity in body.
 
@@ -95,7 +95,7 @@ Takes quantity in body.
 }
 ```
 
-### GET /api/v1/products/
+### GET /products/
 
 ### Request header
  token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya

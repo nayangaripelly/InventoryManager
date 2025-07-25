@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post("/api/v1/signup",async function(req,res)
+app.post("/register",async function(req,res)
 {
     const {username,password} = req.body;
     const hash = await bcrypt.hash(password,5);
@@ -37,7 +37,7 @@ app.post("/api/v1/signup",async function(req,res)
     }
 });
 
-app.post("/api/v1/login",async function(req,res)
+app.post("/login",async function(req,res)
 {
     const {username,password} = req.body;
     try {
@@ -80,7 +80,7 @@ interface customReq extends Request {
 
 app.use(userAuth);
 
-app.post("/api/v1/products",async function(req:customReq,res)
+app.post("/products",async function(req:customReq,res)
 {
     const {name, type,sku, image_url,description,quantity,price} = req.body;
     try{
@@ -99,13 +99,13 @@ app.post("/api/v1/products",async function(req:customReq,res)
         })
     }catch(e)
     {
-        res.status(500).json({
-            msg:"something went wrong try again"
+        res.status(409).json({
+            msg:"user already exists with that username or something went wrong try again"
         })
     }
 });
 
-app.put("/api/v1/products/:id",async function(req:customReq,res)
+app.put("/products/:id/quantity",async function(req:customReq,res)
 {
     const id = req.params.id;
     const quantity = req.body.quantity;
@@ -130,7 +130,7 @@ app.put("/api/v1/products/:id",async function(req:customReq,res)
     }
 });
 
-app.get("/api/v1/products",async function(req:customReq,res)
+app.get("/products",async function(req:customReq,res)
 {
     try{
         const products = await productModel.find({
