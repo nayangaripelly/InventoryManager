@@ -26,7 +26,7 @@ app.post("/api/v1/signup",async function(req,res)
             password:hash
         });
 
-        res.status(200).json({
+        res.status(201).json({
             msg: "successfully signed up !!"
         })
     }catch(e)
@@ -94,7 +94,7 @@ app.post("/api/v1/products",async function(req:customReq,res)
             price,
             userId : req.id
         })
-        res.status(200).json({
+        res.status(201).json({
             msg:`successfully added product ${product.name}, ${product._id}`
         })
     }catch(e)
@@ -119,12 +119,12 @@ app.put("/api/v1/products/:id",async function(req:customReq,res)
         },{
             runValidators:true
         })
-        res.json({
+        res.status(200).json({
             msg:"successfully updated this product"
         })
     }catch(e)
     {
-        res.json({
+        res.status(500).json({
             msg:"something went wrong!! try again"
         })
     }
@@ -138,18 +138,18 @@ app.get("/api/v1/products",async function(req:customReq,res)
         })
         if(products.length == 0)
         {
-            res.json({
+            res.status(204).json({
                 msg:"you don't have any products in your inventory",
             })
             return;
         }
-        res.json({
+        res.status(200).json({
             products,
             msg: "these are all your products"
         })
     }catch(e)
     {
-        res.json({
+        res.status(500).json({
             msg:"something went wrong, try again"
         })
     }
