@@ -63,7 +63,7 @@ Takes username(unique), password and verifies them and send back jwt token.
 ```
 ### POST /api/v1/products
 
-Takes name(unique), type, sku, image_url, description, quantity and price in body and jwt token in header
+Takes name, type, sku, image_url, description, quantity and price in body and jwt token in header
 
 ### Request header
  authorization :Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya 
