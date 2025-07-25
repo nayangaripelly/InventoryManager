@@ -11,7 +11,11 @@ interface customReq extends Request {
 
 export function userAuth(req : customReq, res:Response, next:NextFunction)
 {
-    const token = req.headers.token as string;
+    const authHeader = req.headers.authorization as string;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Missing or invalid Authorization header" });
+    }
+    const token = authHeader.split(" ")[1]; 
     try{
         const user = jwt.verify(token,jwtsecret) as jwt.JwtPayload & { id: string };
         req.id = user.id;

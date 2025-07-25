@@ -8,7 +8,7 @@ const userSchema = new schema({
 });
 
 const productSchema = new schema({
-    name: {type:String, require:true, unique:true},
+    name: {type:String, require:true},
     type: String,
     sku : String,
     image_url : String,

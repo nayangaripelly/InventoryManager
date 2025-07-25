@@ -39,7 +39,7 @@
 
 ## Sample postman collections
 
-### POST /register
+### POST /api/v1/register
 
 Takes username(unique), password and make their entries in users collection.
 
@@ -50,7 +50,7 @@ Takes username(unique), password and make their entries in users collection.
   "password": "123123"
 }
 ```
-### POST /login
+### POST /api/v1/login
 
 Takes username(unique), password and verifies them and send back jwt token.
 
@@ -61,7 +61,7 @@ Takes username(unique), password and verifies them and send back jwt token.
   "password": "123123"
 }
 ```
-### POST /products
+### POST /api/v1/products
 
 Takes name(unique), type, sku, image_url, description, quantity and price in body and jwt token in header
 
@@ -81,7 +81,7 @@ Takes name(unique), type, sku, image_url, description, quantity and price in bod
 }
 ```
 
-### PUT /products/:id/quantity
+### PUT /api/v1/products/:id/quantity
 
 Takes quantity in body.
 
@@ -95,7 +95,20 @@ Takes quantity in body.
 }
 ```
 
-### GET /products/
+### GET /api/v1/products/
 
 ### Request header
  token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjAzNDVlNGRmMjhhNDdkNzFkZGMwMyIsImlhdCI6MTc1MTEzNTkwN30.Qlok-tqWtcJtU6JOdBMZA5zJMJaMIX23hRyap9Ng-8Ya
+
+## Testing
+
+This repo includes `test_api.py`, the test script provided for validating API functionality.
+Run it using:
+
+```bash
+pip install requests
+python test_api.py
+```
+
+All tests passed
+![alt][/All_tests_passed.png]

@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post("/register",async function(req,res)
+app.post("/api/v1/register",async function(req,res)
 {
     const {username,password} = req.body;
     const hash = await bcrypt.hash(password,5);
@@ -31,13 +31,13 @@ app.post("/register",async function(req,res)
         })
     }catch(e)
     {
-        res.status(500).json({
-            msg : "something went wrong try again"
+        res.status(409).json({
+            msg : "user already exists with that username or something went wrong try again"
         })
     }
 });
 
-app.post("/login",async function(req,res)
+app.post("/api/v1/login",async function(req,res)
 {
     const {username,password} = req.body;
     try {
@@ -58,13 +58,12 @@ app.post("/login",async function(req,res)
             })
             return;
         }
-        const token = jwt.sign({
+        const access_token = jwt.sign({
             id:user._id
         },jwtsecret);
 
         res.status(200).json({
-            msg:"successfully logged in",
-            token
+            access_token
         })
     }catch(e)
     {
@@ -75,14 +74,15 @@ app.post("/login",async function(req,res)
 });
 
 interface customReq extends Request {
-    id? : string
+    id? : string;
 };
 
 app.use(userAuth);
 
-app.post("/products",async function(req:customReq,res)
+app.post("/api/v1/products",async function(req:customReq,res)
 {
     const {name, type,sku, image_url,description,quantity,price} = req.body;
+    console.log(req.id);
     try{
         const product = await productModel.create({
             name,
@@ -94,18 +94,17 @@ app.post("/products",async function(req:customReq,res)
             price,
             userId : req.id
         })
-        res.status(201).json({
-            msg:`successfully added product ${product.name}, ${product._id}`
-        })
+        const product_id = product._id;
+        res.status(201).json({product_id});
     }catch(e)
     {
-        res.status(409).json({
-            msg:"user already exists with that username or something went wrong try again"
+        res.status(500).json({
+            msg:"something went wrong try again"
         })
     }
 });
 
-app.put("/products/:id/quantity",async function(req:customReq,res)
+app.put("/api/v1/products/:id/quantity",async function(req:customReq,res)
 {
     const id = req.params.id;
     const quantity = req.body.quantity;
@@ -120,6 +119,7 @@ app.put("/products/:id/quantity",async function(req:customReq,res)
             runValidators:true
         })
         res.status(200).json({
+            updated_qty:quantity,
             msg:"successfully updated this product"
         })
     }catch(e)
@@ -130,7 +130,7 @@ app.put("/products/:id/quantity",async function(req:customReq,res)
     }
 });
 
-app.get("/products",async function(req:customReq,res)
+app.get("/api/v1/products",async function(req:customReq,res)
 {
     try{
         const products = await productModel.find({
@@ -143,10 +143,7 @@ app.get("/products",async function(req:customReq,res)
             })
             return;
         }
-        res.status(200).json({
-            products,
-            msg: "these are all your products"
-        })
+        res.status(200).json(products);
     }catch(e)
     {
         res.status(500).json({
