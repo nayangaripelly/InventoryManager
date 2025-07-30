@@ -8,6 +8,7 @@
 2. have a mongodb cloud url or local setup ready
 3. install mongodb compass to view enteries in DB if you are using cloud url
 4. git for cloning
+5. install Docker to create docker_image and run it 
 
 ## Installation steps
 
@@ -35,6 +36,12 @@
 4. To run
     <pre>bash<br>
     npm run dev
+    <br></pre>
+
+5. To create and run docker image
+  <pre>.powershell<br>
+      docker build -t inventorymanager .
+      docker run -it -e PORT={portnum} -e MONGO_URL={url} -e JWT_SECRET={secret} -p 3000:{portnum} inventorymanager
     <br></pre>
 
 ## Sample postman collections
@@ -109,6 +116,7 @@ Run it using:
 pip install requests
 python test_api.py
 ```
+
 
 All tests passed
 ![alt](./All_tests_passed.png)
