@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const jwtsecret = process.env.JWT_SECRET as string;
 const mongourl = process.env.MONGO_URL as string;
+const port = parseInt(process.env.PORT as string) as number || 3000;
 
 import { userModel,productModel } from "./db";
 import {userAuth} from "./middleware/userAuth";
@@ -155,7 +156,7 @@ app.get("/api/v1/products",async function(req:customReq,res)
 async function main()
 {
     await mongoose.connect(mongourl);
-    app.listen(3000);
+    app.listen(port,()=>console.log(`server started on port ${port}`));
 }
 
 main();
